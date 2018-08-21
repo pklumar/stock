@@ -4,23 +4,31 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                bat 'gradlew clean build -x test'
+                execute 'gradlew clean build -x test'
             }
         }
         stage('Test') {
             steps {
-                bat 'gradlew test'
+                execute 'gradlew test'
             }
         }
         stage('Build') {
             steps {
-                bat 'gradlew docker'
+                execute 'gradlew docker'
             }
         }
         stage('Publish') {
             steps {
-                bat 'gradlew dockerPush'
+                execute 'gradlew dockerPush'
             }
         }
+    }
+}
+
+void execute(String command) {
+    if (isUnix()) {
+        sh command
+    } else {
+        bat command
     }
 }
