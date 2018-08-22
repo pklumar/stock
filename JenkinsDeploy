@@ -1,7 +1,7 @@
 pipeline {
     agent any
     triggers {
-        triggers { upstream(upstreamProjects: 'Stock Packaging', threshold: hudson.model.Result.SUCCESS) }
+        upstream(upstreamProjects: 'Stock Packaging', threshold: hudson.model.Result.SUCCESS)
     }
     stages {
         stage('Pull') {
