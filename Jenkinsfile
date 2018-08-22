@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                sh './gradlew clean build -x test'
+                sh './gradlew clean build'
             }
         }
         stage('Test') {
@@ -14,12 +14,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh './gradlew docker'
+                sh './gradlew dockerBuildImage'
             }
         }
         stage('Publish') {
             steps {
-                sh './gradlew dockerPush'
+                sh './gradlew dockerPushImage -Pdocker-hub-username=$DOCKER_HUB_USERNAME -Pdocker-hub-password=$DOCKER_HUB_PASSWORD'
             }
         }
     }
