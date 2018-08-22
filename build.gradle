@@ -25,10 +25,12 @@ group = 'com.redbit'
 repositories {
     mavenCentral()
 }
+
 docker {
     dependsOn build
-    name "pklumar/stock:latest"
-    tags 'latest'
+    name "pklumar/${bootJar.baseName}:latest"
+    files bootJar.archivePath
+    buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
     dockerfile file('Dockerfile')
 }
 
