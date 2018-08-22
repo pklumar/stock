@@ -19,7 +19,7 @@ pipeline {
                 script {
                     docker.withServer('unix:///var/run/docker.sock') {
                         def image = docker.image('pklumar/stock:latest')
-                        image..withRun('-p 8081:8080')
+                        image.run('-p 8081:8080')
                     }
                 }
             }
