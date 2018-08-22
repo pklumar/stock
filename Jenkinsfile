@@ -24,8 +24,10 @@ pipeline {
         }
         stage('Publish-Using-Plugin') {
             steps {
-                def image = docker.build('pklumar/stock:latest')
-                image.push()
+                script {
+                    def image = docker.build('pklumar/stock:latest')
+                    image.push()
+                }
             }
         }
     }
