@@ -24,10 +24,8 @@ pipeline {
         }
         stage('Publish-Using-Plugin') {
             steps {
-                docker.withServe('tcp://192.168.99.100:2376') {
-                    def image = docker.build('pklumar/stock:latest')
-                    image.push()
-                }
+                def image = docker.build('pklumar/stock:latest')
+                image.push()
             }
         }
     }
