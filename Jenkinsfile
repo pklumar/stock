@@ -19,7 +19,9 @@ pipeline {
         }
         stage('Publish') {
             steps {
-                sh './gradlew dockerPushImage -Pdocker-hub-username=$DOCKER_HUB_USERNAME -Pdocker-hub-password=$DOCKER_HUB_PASSWORD'
+                withCredentials([string(credentialsId: 'DOCKER_HUB_USERNAME', variable: '$DOCKER_HUB_USERNAME'), string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
+                    sh './gradlew dockerPushImage -Pdocker-hub-username=$DOCKER_HUB_USERNAME -Pdocker-hub-password=$DOCKER_HUB_PASSWORD'
+                }
             }
         }
     }
