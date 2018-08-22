@@ -15,14 +15,19 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.build('pklumar/stock:latest')
+                    docker.withServer('unix:///var/run/docker.sock') {
+                        docker.build('pklumar/stock:latest')
+                    }
                 }
             }
         }
         stage('Publish') {
             steps {
                 script {
-                    docker.push('pklumar/stock:latest')
+                    docker.withRegistry('https://index.docker.io/v1/', 'DOCKER_HUB_CREDENTIALS') {
+                        def image = docker.image('pklumar/stock:latest')
+                        image.push()
+                    }
                 }
             }
         }
