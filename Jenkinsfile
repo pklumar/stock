@@ -4,22 +4,22 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                execute 'gradlew clean build -x test'
+                sh './gradlew clean build -x test'
             }
         }
         stage('Test') {
             steps {
-                execute 'gradlew test'
+                sh './gradlew test'
             }
         }
         stage('Build') {
             steps {
-                execute 'gradlew docker'
+                sh './gradlew docker'
             }
         }
         stage('Publish') {
             steps {
-                execute 'gradlew dockerPush'
+                sh './gradlew dockerPush'
             }
         }
         stage('Publish-Using-Plugin') {
@@ -30,13 +30,5 @@ pipeline {
                 }
             }
         }
-    }
-}
-
-void execute(String command) {
-    if (isUnix()) {
-        sh command
-    } else {
-        bat command
     }
 }
