@@ -22,13 +22,5 @@ pipeline {
                 sh './gradlew dockerPush'
             }
         }
-        stage('Publish-Using-Plugin') {
-            steps {
-                script {
-                    def image = docker.build('pklumar/stock:latest')
-                    image.push()
-                }
-            }
-        }
     }
 }
