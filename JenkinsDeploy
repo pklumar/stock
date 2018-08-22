@@ -1,32 +1,25 @@
 pipeline {
     agent any
-
+    triggers {
+        triggers { upstream(upstreamProjects: 'Stock Packaging', threshold: hudson.model.Result.SUCCESS) }
+    }
     stages {
-        stage('Compile') {
-            steps {
-                sh './gradlew clean build'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh './gradlew test'
-            }
-        }
-        stage('Build') {
+        stage('Pull') {
             steps {
                 script {
                     docker.withServer('unix:///var/run/docker.sock') {
-                        docker.build('pklumar/stock:latest')
+                        def image = docker.image('pklumar/stock:latest')
+                        image.pull()
                     }
                 }
             }
         }
-        stage('Publish') {
+        stage('Run') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'DOCKER_HUB_CREDENTIALS') {
+                    docker.withServer('unix:///var/run/docker.sock') {
                         def image = docker.image('pklumar/stock:latest')
-                        image.push()
+                        image.run()
                     }
                 }
             }
